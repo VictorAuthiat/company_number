@@ -2,6 +2,10 @@
 
 require_relative "company_number/version"
 
+if defined?(ActiveModel)
+  require_relative "active_model/company_number_validator"
+end
+
 module CompanyNumber
   autoload :Number, 'company_number/number'
 

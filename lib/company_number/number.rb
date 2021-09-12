@@ -43,7 +43,9 @@ module CompanyNumber
     private
 
     def validate_attributes
-      @country_code = @country_code.to_sym if @country_code.is_a?(String)
+      if @country_code.is_a?(String)
+        @country_code = @country_code.downcase.to_sym
+      end
 
       unless @company_number.is_a?(String)
         raise ArgumentError, 'Expect company_number to be String'
