@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "company_number"
+require "pry"
+require "simplecov"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
