@@ -1,8 +1,6 @@
 # CompanyNumber
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/company_number`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+CompanyNumber is a gem allowing you to validate company number based on a country code
 
 ## Installation
 
@@ -22,7 +20,66 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+You can obtain a `CompanyNumber::Number` object calling `parse` method:
+
+```ruby
+company_number = CompanyNumber.parse('123456789', :fr)
+
+# => #<CompanyNumber::Number:0x00007fd945013d50 @company_number="123456789", @countries=[:bg, :fr, :gr, :lt, :no, :pt, :si, :ch, :gb], @country_code=:fr, @regexp=/^(\d{9}|\d{14})$/>
+```
+
+Then you can run validation methods
+
+```ruby
+company_number.valid?
+# => true
+company_number.valid_country?
+# => true
+company_number.valid_for_country?(:at)
+# => false
+```
+
+You can also fetch matched countries
+
+```ruby
+company_number.countries
+# => [:bg, :fr, :gr, :lt, :no, :pt, :si, :ch, :gb]
+```
+
+There is a `to_s` method, which returns the company number with the country code.
+
+```ruby
+company_number.to_s
+# => "123456789 fr"
+```
+
+There is a `to_h` method, which returns all attr_reader
+
+```ruby
+company_number.to_h
+# => {:company_number=>"123456789", :country_code=>:fr, :countries=>[:bg, :fr, :gr, :lt, :no, :pt, :si, :ch, :gb], :regexp=>/^(\d{9}|\d{14})$/}
+```
+
+You can compare 2 instances of `CompanyNumber::Number` with `==` method
+
+```ruby
+CompanyNumber.parse('123') == CompanyNumber.parse('123')
+# => true
+```
+
+## Rails Validation
+
+In this example, `record.country` must yield a valid [ISO 3166-1 Alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) code
+
+```ruby
+validates :my_column, company_number: { with: proc { |record| record.country } }
+```
+
+You can also just pass a `String` or `Symbol` instead of a `Proc`.
+
+```ruby
+validates :my_column, company_number: :fr
+```
 
 ## Development
 
