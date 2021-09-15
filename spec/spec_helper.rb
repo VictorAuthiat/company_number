@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "active_model"
 require "company_number"
 require "pry"
 require "simplecov"

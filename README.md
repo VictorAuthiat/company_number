@@ -67,20 +67,6 @@ CompanyNumber.parse('123') == CompanyNumber.parse('123')
 # => true
 ```
 
-## Rails Validation
-
-In this example, `record.country` must yield a valid [ISO 3166-1 Alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) code
-
-```ruby
-validates :my_column, company_number: { with: proc { |record| record.country } }
-```
-
-You can also just pass a `String` or `Symbol` instead of a `Proc`.
-
-```ruby
-validates :my_column, company_number: :fr
-```
-
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
