@@ -1,44 +1,135 @@
-version: 2
-jobs:
-  build:
-    docker:
-      - image: ruby:2.7.3
+version: 2.1
+
+commands:
+  setup:
     steps:
       - checkout
+      - restore_cache:
+          key: gem-cache-{{ checksum "company_number.gemspec" }}
       - run:
-          name: Bundle install
+          name: Install Bundler
+          command: gem install bundler:2.2.25
+      - run:
+          name: Configure Bundler
+          command: bundle config set --local path 'vendor/bundle'
+      - run:
+          name: Run Bundle install
+          command: bundle install
+      - save_cache:
+          key: gem-cache-{{ checksum "company_number.gemspec" }}
+          paths:
+            - vendor/bundle
+  rubocop:
+    steps:
+      - run:
+          name: Install Rubocop
+          command: gem install rubocop
+      - run:
+          name: Configure Rubocop
+          command: mkdir rubocop
+      - run:
+          name: Run Rubocop
+          command: rubocop --format html -o rubocop/rubocop.html || true
+      - store_artifacts:
+          name: 'Store Rubocop artifacts'
+          path: rubocop/rubocop.html
+
+  rubycritic:
+    steps:
+      - run:
+          name: Install RubyCritic
+          command: gem install rubycritic
+      - run:
+          name: Run RubyCritic
+          command: rubycritic lib --no-browser
+      - store_artifacts:
+          name: 'Store RubyCritic artifacts'
+          path: tmp/rubycritic
+
+  fukuzatsu:
+    steps:
+      - run:
+          name: Install Fukuzatsu
+          command: gem install fukuzatsu
+      - run:
+          name: Run Fukuzatsu
+          command: fuku check lib -f html
+      - store_artifacts:
+          name: 'Store Fukuzatsu artifacts'
+          path: doc/fukuzatsu/htm
+
+  fasterer:
+    steps:
+      - run:
+          name: Install Fasterer
+          command: gem install fasterer
+      - run:
+          name: Configure Fasterer
           command: |
-            gem install bundler:2.2.25
-            bundle install --path vendor/bundle
-      - run:
-          name: Test
-          command: bundle exec rspec
-      - run:
-          name: Coding style
-          command: |
-            gem install rubocop
-            mkdir -p rubocop
-            rubocop --format html -o rubocop/rubocop.html || true
-      - run:
-          name: Notation
-          command: |
-            gem install rubycritic -v 4.3.2
-            rubycritic lib --no-browser
-      - run:
-          name: Optimization axis
-          command: |
-            gem install fasterer
-            cat << EOF > .fasterer.yml
+            cat \<< EOF > .fasterer.yml
             exclude_paths:
               - 'vendor/**/*.rb'
             EOF
-            fasterer || true
       - run:
-          name: Gemfile Security Audit
+          name: Run Fasterer
+          command: fasterer || true
+
+jobs:
+  audit:
+    working_directory: ~/company_number
+    docker:
+      - image: ruby:2.6.6
+    steps:
+      - setup
+      - run:
+          name: Install Bundler Audit
+          command: gem install bundler-audit
+      - run:
+          name: Run Bundler Audit
+          command: bundle audit --update
+
+  rspec:
+    working_directory: ~/company_number
+    docker:
+      - image: ruby:2.6.6
+    parallelism: 4
+    steps:
+      - setup
+      - run:
+          name: Configure RSpec
           command: |
-            gem install bundler-audit
-            bundle audit --update
-      - store_artifacts:
-          path: rubocop/rubocop.html
-      - store_artifacts:
-          path: tmp/rubycritic
+            mkdir -p ~/test-results/rspec
+      - run:
+          name: Split tests
+          command: |
+            circleci tests glob "spec/**/spec.rb" | \
+            circleci tests split > /tmp/tests
+      - run:
+          name: Run RSpec
+          command: |
+            bundle exec rspec \
+            --format progress \
+            --format RspecJunitFormatter \
+            -o ~/test-results/rspec/rspec.xml
+          when: always
+      - store_test_results:
+          path: ~/test-results/rspec
+
+  analysis:
+    working_directory: ~/company_number
+    docker:
+      - image: ruby:2.6.6
+    steps:
+      - checkout
+      - rubocop
+      - rubycritic
+      - fukuzatsu
+      - fasterer
+
+workflows:
+    version: 2
+    audit-tests-analysis:
+        jobs:
+          - audit
+          - rspec
+          - analysis
