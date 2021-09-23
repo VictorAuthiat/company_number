@@ -7,8 +7,9 @@ module CompanyNumber
       @country_code = country_code
 
       validate_attributes
-      fetch_countries
-      fetch_regexp
+
+      @countries = fetch_countries
+      @regexp = CompanyNumber::VALIDATIONS[@country_code]
     end
 
     def valid?
@@ -20,7 +21,7 @@ module CompanyNumber
     end
 
     def valid_for_country?(country_code)
-      !!(@company_number =~ fetch_regexp(country_code))
+      !!(@company_number =~ CompanyNumber::VALIDATIONS[country_code])
     end
 
     def to_s
@@ -57,18 +58,13 @@ module CompanyNumber
     end
 
     def fetch_countries
-      @countries =
-        if valid_country? || @country_code.nil?
-          CompanyNumber::VALIDATIONS.select do |_country_code, regexp|
-            @company_number =~ regexp
-          end.keys
-        else
-          []
-        end
-    end
-
-    def fetch_regexp(country_code = nil)
-      @regexp = CompanyNumber::VALIDATIONS[country_code || @country_code]
+      if valid_country? || @country_code.nil?
+        CompanyNumber::VALIDATIONS.select do |_country_code, regexp|
+          @company_number =~ regexp
+        end.keys
+      else
+        []
+      end
     end
   end
 end
