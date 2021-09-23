@@ -58,13 +58,11 @@ module CompanyNumber
     end
 
     def fetch_countries
-      if valid_country? || @country_code.nil?
-        CompanyNumber::VALIDATIONS.select do |_country_code, regexp|
-          @company_number =~ regexp
-        end.keys
-      else
-        []
-      end
+      return [] if !valid_country? && @country_code
+
+      CompanyNumber::VALIDATIONS.select do |country_code, regexp|
+        country_code if @company_number =~ regexp
+      end.keys
     end
   end
 end
