@@ -37,7 +37,7 @@ module CompanyNumber
     end
 
     def ==(other)
-      other.is_a?(CompanyNumber::Number) && other.to_s == to_s
+      self.class == other.class && other.to_s == to_s
     end
 
     private
