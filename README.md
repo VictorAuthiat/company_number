@@ -1,6 +1,6 @@
 # CompanyNumber
 
-[![CircleCI](https://circleci.com/gh/VictorAuthiat/company_number.svg?style=shield)](https://circleci.com/gh/VictorAuthiat/company_number)
+[![Build Status](https://github.com/victorauthiat/company_number/actions/workflows/build.yml/badge.svg)](https://github.com/victorauthiat/company_number/actions/workflows/build.yml)
 
 CompanyNumber is a gem allowing you to validate company number based on a country code
 

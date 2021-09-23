@@ -1,0 +1,88 @@
+name: build
+
+on: [ push ]
+
+jobs:
+  rubocop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-ruby@v1
+      - name: Run Rubocop
+        run: |
+          gem install rubocop
+          mkdir rubocop
+          rubocop --format html -o rubocop/rubocop.html || true
+      - name: Store Rubocop artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: rubocop-report
+          path: rubocop/rubocop.html
+
+  rubycritic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-ruby@v1
+      - name: Run RubyCritic
+        run: |
+          gem install rubycritic
+          rubycritic lib --no-browser
+      - name: Store RubyCritic artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: rubycritic-report
+          path: tmp/rubycritic
+
+  fukuzatsu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-ruby@v1
+      - name: Run Fukuzatsu
+        run: |
+          gem install fukuzatsu
+          fuku check lib -f html
+      - name: Store Fukuzatsu artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: fukuzatsu-report
+          path: doc/fukuzatsu/htm
+
+  fasterer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-ruby@v1
+      - name: Install Fasterer
+        run: gem install fasterer
+      - name: Configure Fasterer
+        run: |
+          cat << EOF > .fasterer.yml
+          exclude_paths:
+            - 'vendor/**/*.rb'
+          EOF
+      - name: Run Fasterer
+        run: fasterer || true
+
+  rspec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-ruby@v1
+      - name: Setup
+        run: gem install simplecov pry rspec
+      - name: Run RSpec
+        run: rspec --format progress
+
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-ruby@v1
+      - name: Setup
+        run : |
+          gem install bundler bundler-audit
+          bundle install
+      - name: Run Bundler Audit
+        run : bundle audit --update
