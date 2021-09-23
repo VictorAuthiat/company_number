@@ -3,11 +3,10 @@ module CompanyNumber
     attr_reader :company_number, :country_code, :countries, :regexp
 
     def initialize(company_number, country_code = nil)
+      validate_attributes(company_number, country_code)
+
       @company_number = company_number
-      @country_code = country_code
-
-      validate_attributes
-
+      @country_code = country_code&.downcase&.to_sym
       @countries = fetch_countries
       @regexp = CompanyNumber::VALIDATIONS[@country_code]
     end
@@ -43,18 +42,14 @@ module CompanyNumber
 
     private
 
-    def validate_attributes
-      if @country_code.is_a?(String)
-        @country_code = @country_code.downcase.to_sym
-      end
-
-      unless @company_number.is_a?(String)
+    def validate_attributes(company_number, country_code)
+      unless company_number.is_a?(String)
         raise ArgumentError, 'Expect company_number to be String'
       end
 
-      unless [NilClass, Symbol].include?(@country_code.class)
-        raise ArgumentError, 'Expect country_code to be Symbol or nil'
-      end
+      return if [NilClass, Symbol, String].include?(country_code.class)
+
+      raise ArgumentError, 'Expect country_code to be String, Symbol or nil'
     end
 
     def fetch_countries
