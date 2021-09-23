@@ -74,6 +74,11 @@ jobs:
         run: gem install simplecov pry rspec
       - name: Run RSpec
         run: rspec --format progress
+      - name: Store SimpleCov artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: simplecov-report
+          path: coverage
 
   audit:
     runs-on: ubuntu-latest
