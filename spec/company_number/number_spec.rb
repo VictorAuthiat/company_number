@@ -27,6 +27,16 @@ RSpec.describe CompanyNumber::Number do
           expect { subject }.to raise_error(ArgumentError)
         end
       end
+
+      ['foo', :foo, nil].each do |country_code|
+        context "given the country_code is #{country_code.class}" do
+          let(:country_code) { country_code }
+
+          it 'does not raise error' do
+            expect { subject }.not_to raise_error
+          end
+        end
+      end
     end
   end
 
@@ -54,6 +64,12 @@ RSpec.describe CompanyNumber::Number do
           let(:company_number) { '123456789' }
 
           it { is_expected.to eq(true) }
+        end
+
+        context 'given the company_number does not match regexp pattern' do
+          let(:company_number) { '123' }
+
+          it { is_expected.to eq(false) }
         end
       end
     end
