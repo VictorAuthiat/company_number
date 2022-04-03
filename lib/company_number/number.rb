@@ -1,14 +1,30 @@
 module CompanyNumber
   class Number
-    attr_reader :company_number, :country_code, :countries, :regexp
+    attr_reader :company_number, :country_code, :metadata
 
     def initialize(company_number, country_code = nil)
-      validate_attributes(company_number, country_code)
+      check_param_type(company_number, [String])
+      check_param_type(country_code, [NilClass, Symbol, String])
 
       @company_number = company_number
-      @country_code = country_code&.downcase&.to_sym
-      @countries = fetch_countries
-      @regexp = CompanyNumber::VALIDATIONS[@country_code]
+      @country_code   = country_code&.downcase&.to_sym
+      @metadata       = CompanyNumber.dictionary[@country_code] || {}
+    end
+
+    def to_h
+      {
+        company_number: @company_number,
+        country_code: @country_code,
+        metadata: @metadata
+      }
+    end
+
+    def to_s
+      "#{@company_number} #{@country_code}"
+    end
+
+    def ==(other)
+      self.class == other.class && other.to_s == to_s
     end
 
     def valid?
@@ -16,48 +32,37 @@ module CompanyNumber
     end
 
     def valid_country?
-      CompanyNumber::VALIDATIONS.keys.include?(@country_code)
+      CompanyNumber.dictionary.keys.include?(@country_code)
     end
 
     def valid_for_country?(country_code)
-      !!(@company_number =~ CompanyNumber::VALIDATIONS[country_code])
+      check_param_type(country_code, [Symbol])
+
+      !!(@company_number =~ country_code_regexp(country_code))
     end
 
-    def to_s
-      "#{@company_number} #{@country_code}"
-    end
+    def valid_countries
+      return [] if !valid_country? && @country_code
 
-    def to_h
-      {
-        company_number: @company_number,
-        country_code: @country_code,
-        countries: @countries,
-        regexp: @regexp
-      }
-    end
-
-    def ==(other)
-      self.class == other.class && other.to_s == to_s
+      CompanyNumber
+        .dictionary
+        .keys
+        .select { |country_code| valid_for_country?(country_code) }
     end
 
     private
 
-    def validate_attributes(company_number, country_code)
-      unless company_number.is_a?(String)
-        raise ArgumentError, 'Expect company_number to be String'
-      end
+    def country_code_regexp(country_code)
+      regexp = CompanyNumber.dictionary.dig(country_code, :regexp)
 
-      return if [NilClass, Symbol, String].include?(country_code.class)
-
-      raise ArgumentError, 'Expect country_code to be String, Symbol or nil'
+      Regexp.new(regexp) unless regexp.nil?
     end
 
-    def fetch_countries
-      return [] if !valid_country? && @country_code
+    def check_param_type(param, expected_classes = [])
+      return if expected_classes.include?(param.class)
 
-      CompanyNumber::VALIDATIONS.select do |country_code, regexp|
-        country_code if @company_number =~ regexp
-      end.keys
+      raise ArgumentError,
+            "Expect class of #{param} to be #{expected_classes.join(', ')}"
     end
   end
 end
