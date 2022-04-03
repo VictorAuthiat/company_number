@@ -20,7 +20,7 @@ module CompanyNumber
     end
 
     def to_s
-      "#{@company_number} #{@country_code}"
+      "#{@company_number} #{@country_code}".strip
     end
 
     def ==(other)

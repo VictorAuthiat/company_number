@@ -125,9 +125,26 @@ RSpec.describe CompanyNumber::Number do
     describe '#to_s' do
       subject { number.to_s }
       let(:company_number) { '123456789' }
-      let(:country_code) { :fr }
 
-      it { is_expected.to be_a(String) }
+      context "given a country code" do
+        let(:country_code) { :fr }
+
+        it { is_expected.to be_a(String) }
+
+        it "returns the company number with the country code" do
+          expect(subject).to eq("#{company_number} #{country_code}")
+        end
+      end
+
+      context "given no country code" do
+        let(:country_code) { nil }
+
+        it { is_expected.to be_a(String) }
+
+        it "returns only the company number" do
+          expect(subject).to eq(company_number)
+        end
+      end
     end
 
     describe '#to_h' do
