@@ -27,7 +27,15 @@ You can obtain a `CompanyNumber::Number` object calling `parse` method:
 ```ruby
 company_number = CompanyNumber.parse('123456789', :fr)
 
-# => #<CompanyNumber::Number:0x00007fd945013d50 @company_number="123456789", @countries=[:bg, :fr, :gr, :lt, :no, :pt, :si, :ch, :gb], @country_code=:fr, @regexp=/^(\d{9}|\d{14})$/>
+# => #<CompanyNumber::Number:0x00007facae8c0638
+#  @company_number="123456789",
+#  @country_code=:fr,
+#  @metadata={
+#    :country=>"France",
+#    :name=>"Numéro SIREN ou SIRET",
+#    :regexp=>"^(\\d{9}|\\d{14})$",
+#    :pattern=>"9 numbers (XXXXXXXXX) or 14 numbers (XXXXXXXXXXXXXX)"
+#  }>
 ```
 
 Then you can run validation methods
@@ -41,11 +49,22 @@ company_number.valid_for_country?(:at)
 # => false
 ```
 
-You can also fetch matched countries
+You can also fetch valid countries
 
 ```ruby
-company_number.countries
+company_number.valid_countries
 # => [:bg, :fr, :gr, :lt, :no, :pt, :si, :ch, :gb]
+```
+
+Additionally you can get metadata
+```ruby
+company_number.metadata
+# => {
+#   :country=>"France",
+#   :name=>"Numéro SIREN ou SIRET",
+#   :regexp=>"^(\\d{9}|\\d{14})$",
+#   :pattern=>"9 numbers (XXXXXXXXX) or 14 numbers (XXXXXXXXXXXXXX)"
+# }
 ```
 
 There is a `to_s` method, which returns the company number with the country code.
@@ -59,7 +78,16 @@ There is a `to_h` method, which returns all attr_reader
 
 ```ruby
 company_number.to_h
-# => {:company_number=>"123456789", :country_code=>:fr, :countries=>[:bg, :fr, :gr, :lt, :no, :pt, :si, :ch, :gb], :regexp=>/^(\d{9}|\d{14})$/}
+# => {
+#   :company_number=>"123456789",
+#   :country_code=>:fr,
+#   :metadata=>{
+#     :country=>"France",
+#     :name=>"Numéro SIREN ou SIRET",
+#     :regexp=>"^(\\d{9}|\\d{14})$",
+#     :pattern=>"9 numbers (XXXXXXXXX) or 14 numbers (XXXXXXXXXXXXXX)"
+#   }
+# }
 ```
 
 You can compare 2 instances of `CompanyNumber::Number` with `==` method
@@ -67,6 +95,27 @@ You can compare 2 instances of `CompanyNumber::Number` with `==` method
 ```ruby
 CompanyNumber.parse('123') == CompanyNumber.parse('123')
 # => true
+```
+
+Finally you can get the whole dictionary
+```ruby
+CompanyNumber.dictionary
+# => {
+#   :at=>{
+#     :country=>"Austria",
+#     :name=>"Firmenbuchnummer",
+#     :regexp=>"^([a-zA-Z]{2}\\d{1,6}|\\d{1,6})[A-Z]$",
+#     :pattern=>"2 letters + 6 numbers + 1 letter (LLXXXXXXL)",
+#     :variations=>"1-6 numbers + 1 letter (XXXXXXL)"
+#   },
+#   :be=>{
+#     :country=>"Belgium",
+#     :name=>"Numéro d'entreprise Vestigingseenheidsnummer",
+#     :regexp=>"^\\d{10}$",
+#     :pattern=>"10 numbers (XXXXXXXXXX)"
+#   },
+#   ...
+# }
 ```
 
 ## Development
