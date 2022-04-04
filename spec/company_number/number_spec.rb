@@ -125,9 +125,26 @@ RSpec.describe CompanyNumber::Number do
     describe '#to_s' do
       subject { number.to_s }
       let(:company_number) { '123456789' }
-      let(:country_code) { :fr }
 
-      it { is_expected.to be_a(String) }
+      context "given a country code" do
+        let(:country_code) { :fr }
+
+        it { is_expected.to be_a(String) }
+
+        it "returns the company number with the country code" do
+          expect(subject).to eq("#{company_number} #{country_code}")
+        end
+      end
+
+      context "given no country code" do
+        let(:country_code) { nil }
+
+        it { is_expected.to be_a(String) }
+
+        it "returns only the company number" do
+          expect(subject).to eq(company_number)
+        end
+      end
     end
 
     describe '#to_h' do
@@ -136,7 +153,19 @@ RSpec.describe CompanyNumber::Number do
       let(:company_number) { '123456789' }
       let(:country_code) { :fr }
 
+      let(:expected) do
+        {
+          company_number: company_number,
+          country_code: country_code,
+          metadata: number.metadata
+        }
+      end
+
       it { is_expected.to be_a(Hash) }
+
+      it 'returns attributes with metadata' do
+        expect(subject).to eq(expected)
+      end
     end
 
     describe '#==' do
@@ -166,6 +195,28 @@ RSpec.describe CompanyNumber::Number do
         end
 
         it { is_expected.to eq(false) }
+      end
+    end
+
+    describe '#valid_countries' do
+      subject { number.valid_countries }
+
+      let(:company_number) { '123456789' }
+
+      context "given an unavailable country code" do
+        let(:country_code) { :foo }
+
+        it "returns an empty array" do
+          expect(subject).to eq([])
+        end
+      end
+
+      context "given no country code" do
+        let(:country_code) { nil }
+
+        it "returns countries that match" do
+          expect(subject).to eq(%i[bg fr gr lt no pt si ch gb])
+        end
       end
     end
   end

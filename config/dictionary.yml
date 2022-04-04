@@ -1,0 +1,214 @@
+at:
+  country: Austria
+  name: Firmenbuchnummer
+  regexp: ^([a-zA-Z]{2}\d{1,6}|\d{1,6})[A-Z]$
+  pattern: 2 letters + 6 numbers + 1 letter (LLXXXXXXL)
+  variations: 1-6 numbers + 1 letter (XXXXXXL)
+
+be:
+  country: Belgium
+  name: Numéro d'entreprise Vestigingseenheidsnummer
+  regexp: ^\d{10}$
+  pattern: 10 numbers (XXXXXXXXXX)
+
+bg:
+  country: Bulgaria
+  name: ЕИК (EIK)/ПИК (PIK) (UIC/PIC)
+  regexp: ^(\d{9}|\d{13})$
+  pattern: 9 numbers (XXXXXXXXX)
+  variations: 13 numbers (XXXXXXXXXXXXX)
+
+hr:
+  country: Croatia
+  name: Matični broj poslovnog subjekta (MBS)
+  regexp: ^(\d{8}|\d{11})$
+  pattern: 11 numbers (XXXXXXXXXXX)
+  variations: 8 numbers (XXXXXXXX)
+
+cy:
+  country: Cyprus
+  regexp: ^[a-zA-Z]{2}\d{6}$
+  name: Αριθμός Μητρώου Εταιρίας Şirket kayıt numarası
+  pattern: 2 letters + 6 numbers (HEXXXXXX)
+
+cz:
+  country: Czech Republic
+  name: Identifikační číslo
+  regexp: ^\d{8}$
+  pattern: 8 numbers (XXXXXXXX)
+
+dk:
+  country: Denmark
+  name: CVR-nummer
+  regexp: ^\d{8}$
+  pattern: 8 numbers (XXXXXXXX)
+
+ee:
+  country: Estonia
+  name: Kood
+  regexp: ^\d{8}$
+  pattern: 8 numbers (XXXXXXXX)
+
+fi:
+  country: Finland
+  name: Y-tunnus FO-nummer
+  regexp: ^\d{8}$
+  pattern: 8 numbers (XXXXXXXX)
+
+fr:
+  country: France
+  name: Numéro SIREN ou SIRET
+  regexp: ^(\d{9}|\d{14})$
+  pattern: 9 numbers (XXXXXXXXX) or 14 numbers (XXXXXXXXXXXXXX)
+
+de:
+  country: Germany
+  name: Nummer der Firma Registernummer
+  regexp: ^[a-zA-Z]{1,3}\d{1,6}[a-zA-Z]{0,3}$
+  pattern: 2-3 letters + 6 numbers (LLXXXXXX)
+  variations: |
+    2-3 letters + 1-6 numbers (LLLXXXX)
+    or 2-3 letters + 1-6 numbers + 1 letter (LLLXXXXXXL)
+    or 2-3 letters + 1-6 numbers + 1-2 letter (LLLXXXXXXLL)
+
+gr:
+  country: Greece
+  name: Αριθμό Φορολογικού Μητρώου (Α.Φ.Μ.)
+  regexp: ^(\d{9}|\d{12})$
+  pattern: 12 numbers (XXXXXXXXXXXX)
+  variations: 9 numbers (XXXXXXXXX)
+
+hu:
+  country: Hungary
+  name: Cégjegyzékszáma
+  regexp: ^[a-zA-Z]{2}\d{10}$
+  pattern: 2 letters + 10 numbers (LLXXXXXXXXXX)
+
+ie:
+  country: Ireland
+  name: Company Number
+  regexp: ^(\d{5}|\d{6})$
+  pattern: 6 numbers (XXXXXX)
+  variations: 5 numbers (XXXXX)
+
+is:
+  country: Island
+  name: TIN
+  regexp: ^\d{10}$
+  pattern: 10 numbers (XXXXXXXXXX)
+
+it:
+  country: Italy
+  name: Codice fiscale
+  regexp: ^[a-zA-Z]{2}\d{7}|\d{11}$
+  pattern: 11 numbers (XXXXXXXXXXX)
+  variations: 2 letters + 7 numbers (LLXXXXXXX)
+
+lv:
+  country: Latvia
+  name: Reģistrācijas numurs
+  regexp: ^\d{11}$
+  pattern: 11 numbers (XXXXXXXXXXX)
+
+li:
+  country: Liechtenstein
+  name: UID
+  regexp: ^[a-zA-Z]{3}\d{3}\s\d{3}\s\d{3}$
+  pattern: 3 letters + 9 numbers (LLLXXX XXX XXX)
+
+lt:
+  country: Lithuania
+  name: Juridinio asmens kodas
+  regexp: ^\d{9}$
+  pattern: 9 numbers (XXXXXXXXX)
+
+lu:
+  country: Luxembourg
+  name: Numéro d'immatriculation
+  regexp: ^[a-zA-Z]{1}\d{6}|[a-jA-J]\d{3}$
+  pattern: 1 letter + 6 numbers (LXXXXXX)'
+  variations: 1 letter (from A to J) + 3 numbers (AXXX)
+
+mt:
+  country: Malta
+  name: Registration Number
+  regexp: ^[a-zA-Z]{1}\d{5}$
+  pattern: 1 letter + 5 numbers (LXXXXX)
+
+nl:
+  country: Netherlands
+  name: KvK-nummer
+  regexp: ^\d{8}$
+  pattern: 8 numbers (XXXXXXXX)
+
+"no":
+  country: Norway
+  name: TIN
+  regexp: ^(\d{9}|\d{11})$
+  pattern: 11 numbers (XXXXXXXXXXX)
+  variations: 9 numbers (XXXXXXXXX)
+
+pl:
+  country: Poland
+  name: Numer w Krajowym Rejestrze Sądowym (numer KRS)
+  regexp: ^(\d{6}|\d{8})$
+  pattern: 8 numbers (XXXXXXXX)
+  variations: 6 numbers (XXXXXX)
+
+pt:
+  country: Portugal
+  name: Número de Identificação Pessoa Coletiva (NIPC)
+  regexp: ^(\d{9}|\d{3,6})$
+  pattern: 9 numbers (XXXXXXXXX)
+  variations: 3-6 numbers (XXXXXX)
+
+ro:
+  country: Romania
+  name: Număr de ordine în Registrul Comerţului
+  regexp: ^\d{3}\s\d{2}\s\d{3}$
+  pattern: 8 numbers (XXX XX XXX)
+
+sk:
+  country: Slovakia
+  name: Identifikačného čísla Identification number
+  regexp: ^\d{3}\s\d{2}\s\d{3}$
+  pattern: 8 numbers (XXX XX XXX)
+
+si:
+  country: Slovenia
+  name: Matična številka
+  regexp: ^\d{10}|\d{7,10}$
+  pattern: 10 numbers (XXXXXXXXXX)
+  variations: 7 - 10 numbers (XXXXXXXXXX)
+
+es:
+  country: Spain
+  name: Número de identificación fiscal (NIF)
+  regexp: ^[a-zA-Z]{1}(\d{8}|\d{7}[a-zA-Z]{1})$
+  pattern: 1 letter + 8 numbers (LXXXXXXXX)
+  variations: 1 letter + 7 numbers + 1 letter (LXXXXXXXL)
+
+se:
+  country: Sweden
+  name: Registreringsnummer
+  regexp: ^\d{10}$
+  pattern: 10 numbers (XXXXXXXXXX)
+
+ch:
+  country: Switzerland
+  name: UID
+  regexp: ^CHE\d{9}|\d{9}$
+  pattern: 9 numbers (XXXXXXXXX)
+  variations: CHE + 9 numbers
+
+gb:
+  country: United Kingdom
+  name: Company Number Registration Number
+  regexp: ^\d{8}|(OC|SC|NI)\d{6}|R\d{7}|IP\d{5}R$
+  pattern: 8 numbers (XXXXXXX)
+  variations: |
+    OC + 6 numbers (OCXXXXXX)
+    or SC + 6 numbers (SCXXXXXX)
+    or NI + 6 numbers (NIXXXXXX)
+    or R + 7 numbers (RXXXXXXX)
+    or IP + 5 numbers + R (IPXXXXXR)

@@ -19,3 +19,6 @@ Metrics/MethodLength:
 
 Layout/LineLength:
   Max: 80
+
+Naming/MemoizedInstanceVariableName:
+   EnforcedStyleForLeadingUnderscores: optional

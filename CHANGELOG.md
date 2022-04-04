@@ -1,5 +1,19 @@
-# Changelog
+## Changelog
 
-## 0.1.0 [☰](https://github.com/victorauthiat/company_number)
+### 0.1.1 - 2022-04-04
+  * Features:
+    * Add dictionary to return the company number metadata - b19c8d9
 
-- Initial release
+  * Deprecations:
+    * Remove `regexp` attr_reader (moved to metadata) - #3
+    * Remove `countries` attr_reader to use `CompanyNumber::Number#valid_countries` - #3
+
+  * Bug fixes:
+    * Fix `CompanyNumber::Number#to_s` method not to return trailing whitespace when country code is not filled in - 9b4f3c53
+
+  * Enhancements:
+    * Update RuboCop configuration - e34eca5
+
+### 0.1.0 - 2021-09-24
+
+  * Initial release
