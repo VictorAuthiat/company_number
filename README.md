@@ -33,12 +33,9 @@ company_number = CompanyNumber.parse('123456789', :fr)
 Then you can run validation methods
 
 ```ruby
-company_number.valid?
-# => true
-company_number.valid_country?
-# => true
-company_number.valid_for_country?(:at)
-# => false
+company_number.valid?                  # => true
+company_number.valid_country?          # => true
+company_number.valid_for_country?(:at) # => false
 ```
 
 You can also fetch valid countries
@@ -81,6 +78,95 @@ Finally you can get the whole dictionary
 CompanyNumber.dictionary
 # => {:at=>{:country=>"Austria", :name=>"Firmenbuchnummer", :regexp=>"^([a-zA-Z]{2}\\d{1,6}|\\d{1,6})[A-Z]$", :pattern=>"2 letters + 6 numbers + 1 letter (LLXXXXXXL)", :variations=>"1-6 numbers + 1 letter (XXXXXXL)"}, ...}
 ```
+
+## Configuration
+You can configure your own dictionary using **custom_dictionary**.
+It should be a hash with the country codes as keys and the associated metadata as values.
+
+Available metadata keys:
+- country
+- name
+- regexp
+- pattern
+- variations
+
+**Example:**
+```ruby
+CompanyNumber.parse('123456789', :fr).valid?      # => true
+CompanyNumber.parse('12345678901234', :fr).valid? # => true
+
+CompanyNumber.configure do |config|
+  config.custom_dictionary = { fr: { regexp: '^\d{14}$' } }
+end
+
+CompanyNumber.parse('123456789', :fr).valid?      # => false
+CompanyNumber.parse('12345678901234', :fr).valid? # => true
+```
+
+**strict_validation:**
+
+You can also enable strict validation to reject unknow countries:
+
+```ruby
+CompanyNumber.parse('123456789').valid?      # => true
+CompanyNumber.parse('123456789', :tt).valid? # => true
+
+CompanyNumber.configure do |config|
+  config.strict_validation = true
+end
+
+CompanyNumber.parse('123456789').valid?      # => false
+CompanyNumber.parse('123456789', :tt).valid? # => false
+```
+
+**excluded_countries:**
+
+You may want to exclude some countries, this allows you to automatically validate the country's company number when strict validation is not enabled. You can also exclude a country to overwrite all its metadata and define it later in a custom dictionary.
+
+**Example:**
+```ruby
+CompanyNumber.parse('123456789', :be).valid? # => false
+
+CompanyNumber.configure do |config|
+  config.excluded_countries = [:be]
+end
+
+CompanyNumber.parse('123456789', :be).valid? # => true
+```
+
+## Default dictionary:
+
+- `:at` - **Austria** - Firmenbuchnummer
+- `:be` - **Belgium** - Numéro d'entreprise Vestigingseenheidsnummer
+- `:bg` - **Bulgaria** - ЕИК (EIK)/ПИК (PIK) (UIC/PIC)
+- `:hr` - **Croatia** - Matični broj poslovnog subjekta (MBS)
+- `:cy` - **Cyprus** - Αριθμός Μητρώου Εταιρίας Şirket kayıt numarası
+- `:cz` - **Czech** - epublic (Identifikační číslo
+- `:dk` - **Denmark** - CVR-nummer
+- `:ee` - **Estonia** - Kood
+- `:fi` - **Finland** - Y-tunnus FO-nummer
+- `:fr` - **France** - Numéro SIREN ou SIRET
+- `:de` - **Germany** - Nummer der Firma Registernummer
+- `:gr` - **Greece** - Αριθμό Φορολογικού Μητρώου (Α.Φ.Μ.)
+- `:hu` - **Hungary** - Cégjegyzékszáma
+- `:ie` - **Ireland** - Company Number
+- `:is` - **Island** - TIN
+- `:it` - **Italy** - Codice fiscale
+- `:lv` - **Latvia** - Reģistrācijas numurs
+- `:li` - **Liechtenstein** - UID
+- `:lt` - **Lithuania** - Juridinio asmens kodas
+- `:lu` - **Luxembourg** - Numéro d'immatriculation
+- `:mt` - **Malta** - Registration Number
+- `:nl` - **Netherlands** - KvK-nummer
+- `:no` - **Norway** - TIN
+- `:pl` - **Poland** - Numer w Krajowym Rejestrze Sądowym (numer KRS)) NIPC)
+- `:ro` - **Romania** - Număr de ordine în Registrul Comerţului
+- `:sk` - **Slovakia** - Identifikačného čísla Identification number
+- `:si` - **Slovenia** - Matična številka
+- `:es` - **Spain** - Número de identificación fiscal (NIF)
+- `:se` - **Sweden** - Registreringsnummer
+- `:ch` - **Switzerland** - UID
+- `:gb` - **United Kingdom** - Company Number Registration Number
 
 ## Development
 
