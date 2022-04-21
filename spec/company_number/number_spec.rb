@@ -28,7 +28,7 @@ RSpec.describe CompanyNumber::Number do
         end
       end
 
-      ['foo', :foo, nil].each do |country_code|
+      ['at', :be, nil].each do |country_code|
         context "given the country_code is #{country_code.class}" do
           let(:country_code) { country_code }
 
@@ -52,9 +52,23 @@ RSpec.describe CompanyNumber::Number do
       end
 
       context 'given the country_code is not supported' do
-        let(:country_code) { :foo }
+        let(:country_code) { :aa }
 
-        it { is_expected.to eq(true) }
+        context 'given the configuration rejects unknown countries' do
+          before do
+            CompanyNumber.configuration.strict_validation = true
+          end
+
+          it { is_expected.to eq(false) }
+        end
+
+        context 'given the configuration does not reject unknown countries' do
+          before do
+            CompanyNumber.configuration.strict_validation = false
+          end
+
+          it { is_expected.to eq(true) }
+        end
       end
 
       context 'given the country_code is supported' do
@@ -84,9 +98,23 @@ RSpec.describe CompanyNumber::Number do
       end
 
       context 'given the country_code is not supported' do
-        let(:country_code) { :foo }
+        let(:country_code) { :aa }
 
-        it { is_expected.to eq(false) }
+        context 'given the configuration rejects unknown countries' do
+          before do
+            CompanyNumber.configuration.strict_validation = true
+          end
+
+          it { is_expected.to eq(false) }
+        end
+
+        context 'given the configuration does not reject unknown countries' do
+          before do
+            CompanyNumber.configuration.strict_validation = false
+          end
+
+          it { is_expected.to eq(true) }
+        end
       end
 
       context 'given the country_code is supported' do
@@ -99,25 +127,59 @@ RSpec.describe CompanyNumber::Number do
     describe '#valid_for_country?' do
       subject { number.valid_for_country?(country) }
 
-      context 'given the country_code is not supported' do
-        let(:country) { :foo }
+      context 'given an invalid country code type' do
+        let(:country) { 'foo' }
 
-        it { is_expected.to eq(false) }
+        it 'raise error ArgumentError' do
+          expect { subject }.to raise_error(ArgumentError)
+        end
       end
 
-      context 'given the specified country is supported' do
-        let(:country) { :fr }
+      context 'given a valid country code type' do
+        let(:country) { :foo }
 
-        context 'given the company_number does not match regexp' do
-          let(:company_number) { 'foo' }
-
-          it { is_expected.to eq(false) }
+        context 'given an invalid country code format' do
+          it 'raise error ArgumentError' do
+            expect { subject }.to raise_error(ArgumentError)
+          end
         end
 
-        context 'given the company_number match regexp' do
-          let(:company_number) { '123456789' }
+        context 'given an valid country code format' do
+          context 'given the country_code is not supported' do
+            let(:country) { :tt }
 
-          it { is_expected.to eq(true) }
+            context 'given the configuration rejects unknown countries' do
+              before do
+                CompanyNumber.configuration.strict_validation = true
+              end
+
+              it { is_expected.to eq(false) }
+            end
+
+            context 'given the configuration does not reject unknown countries' do
+              before do
+                CompanyNumber.configuration.strict_validation = false
+              end
+
+              it { is_expected.to eq(true) }
+            end
+          end
+
+          context 'given the specified country is supported' do
+            let(:country) { :fr }
+
+            context 'given the company_number does not match regexp' do
+              let(:company_number) { 'foo' }
+
+              it { is_expected.to eq(false) }
+            end
+
+            context 'given the company_number match regexp' do
+              let(:company_number) { '123456789' }
+
+              it { is_expected.to eq(true) }
+            end
+          end
         end
       end
     end
@@ -171,7 +233,7 @@ RSpec.describe CompanyNumber::Number do
     describe '#==' do
       subject { number == other_company_number }
       let(:company_number) { 'foo' }
-      let(:country_code) { :bar }
+      let(:country_code) { :fr }
 
       context 'given the same attributes' do
         let(:other_company_number) do
@@ -191,7 +253,7 @@ RSpec.describe CompanyNumber::Number do
 
       context 'given a different country_code' do
         let(:other_company_number) do
-          described_class.new(company_number, :foo)
+          described_class.new(company_number, :be)
         end
 
         it { is_expected.to eq(false) }
@@ -204,10 +266,26 @@ RSpec.describe CompanyNumber::Number do
       let(:company_number) { '123456789' }
 
       context "given an unavailable country code" do
-        let(:country_code) { :foo }
+        let(:country_code) { :aa }
 
-        it "returns an empty array" do
-          expect(subject).to eq([])
+        context 'given the configuration rejects unknown countries' do
+          before do
+            CompanyNumber.configuration.strict_validation = true
+          end
+
+          it "returns an empty array" do
+            expect(subject).to eq([])
+          end
+        end
+
+        context 'given the configuration does not reject unknown countries' do
+          before do
+            CompanyNumber.configuration.strict_validation = false
+          end
+
+          it "returns countries that match" do
+            expect(subject).to eq(%i[bg fr gr lt no pt si ch gb])
+          end
         end
       end
 

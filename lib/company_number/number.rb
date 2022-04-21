@@ -1,10 +1,13 @@
+# frozen_string_literal: true
+
 module CompanyNumber
   class Number
     attr_reader :company_number, :country_code, :metadata
 
     def initialize(company_number, country_code = nil)
-      check_param_type(company_number, [String])
-      check_param_type(country_code, [NilClass, Symbol, String])
+      Validation.check_object_class(company_number, [String])
+      Validation.check_object_class(country_code, [NilClass, Symbol, String])
+      Validation.check_iso_code_format(country_code)
 
       @company_number = company_number
       @country_code   = country_code&.downcase&.to_sym
@@ -28,17 +31,22 @@ module CompanyNumber
     end
 
     def valid?
-      !valid_country? || valid_for_country?(@country_code)
+      if CompanyNumber.strict_validation?
+        country_code_present_and_valid_country?
+      else
+        no_country_code_or_valid_country?
+      end
     end
 
     def valid_country?
-      CompanyNumber.dictionary.keys.include?(@country_code)
+      CompanyNumber.dictionary.keys.include?(@country_code) ||
+        (!CompanyNumber.strict_validation? && !!@country_code)
     end
 
     def valid_for_country?(country_code)
-      check_param_type(country_code, [Symbol])
-
-      !!(@company_number =~ country_code_regexp(country_code))
+      Validation.check_iso_code_format(country_code)
+      regexp = CompanyNumber.dictionary.dig(country_code, :regexp)
+      (!CompanyNumber.strict_validation? && !regexp) || valid_code?(regexp)
     end
 
     def valid_countries
@@ -52,17 +60,16 @@ module CompanyNumber
 
     private
 
-    def country_code_regexp(country_code)
-      regexp = CompanyNumber.dictionary.dig(country_code, :regexp)
-
-      Regexp.new(regexp) unless regexp.nil?
+    def no_country_code_or_valid_country?
+      !@country_code || valid_for_country?(@country_code)
     end
 
-    def check_param_type(param, expected_classes = [])
-      return if expected_classes.include?(param.class)
+    def country_code_present_and_valid_country?
+      !!@country_code && valid_for_country?(@country_code)
+    end
 
-      raise ArgumentError,
-            "Expect class of #{param} to be #{expected_classes.join(', ')}"
+    def valid_code?(regexp = nil)
+      !!regexp && !!(@company_number =~ Regexp.new(regexp))
     end
   end
 end
