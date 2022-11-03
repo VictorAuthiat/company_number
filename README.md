@@ -6,10 +6,10 @@ CompanyNumber is a gem allowing you to validate company number based on a countr
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application"s Gemfile:
 
 ```ruby
-gem 'company_number'
+gem "company_number"
 ```
 
 And then execute:
@@ -25,7 +25,7 @@ Or install it yourself as:
 You can obtain a `CompanyNumber::Number` object calling `parse` method:
 
 ```ruby
-company_number = CompanyNumber.parse('123456789', :fr)
+company_number = CompanyNumber.parse("123456789", :fr)
 
 # => #<CompanyNumber::Number:0x00007fc015d04e18 @company_number="123456789", @country_code=:fr, @metadata={:country=>"France", :name=>"Numéro SIREN ou SIRET", :regexp=>"^(\\d{9}|\\d{14})$", :pattern=>"9 numbers (XXXXXXXXX) or 14 numbers (XXXXXXXXXXXXXX)"}>
 ```
@@ -69,7 +69,7 @@ company_number.to_h
 You can compare 2 instances of `CompanyNumber::Number` with `==` method
 
 ```ruby
-CompanyNumber.parse('123') == CompanyNumber.parse('123')
+CompanyNumber.parse("123") == CompanyNumber.parse("123")
 # => true
 ```
 
@@ -92,15 +92,15 @@ Available metadata keys:
 
 **Example:**
 ```ruby
-CompanyNumber.parse('123456789', :fr).valid?      # => true
-CompanyNumber.parse('12345678901234', :fr).valid? # => true
+CompanyNumber.parse("123456789", :fr).valid?      # => true
+CompanyNumber.parse("12345678901234", :fr).valid? # => true
 
 CompanyNumber.configure do |config|
-  config.custom_dictionary = { fr: { regexp: '^\d{14}$' } }
+  config.custom_dictionary = { fr: { regexp: "^\d{14}$" } }
 end
 
-CompanyNumber.parse('123456789', :fr).valid?      # => false
-CompanyNumber.parse('12345678901234', :fr).valid? # => true
+CompanyNumber.parse("123456789", :fr).valid?      # => false
+CompanyNumber.parse("12345678901234", :fr).valid? # => true
 ```
 
 **strict_validation:**
@@ -108,36 +108,36 @@ CompanyNumber.parse('12345678901234', :fr).valid? # => true
 You can also enable strict validation to reject unknow countries:
 
 ```ruby
-CompanyNumber.parse('123456789').valid?      # => true
-CompanyNumber.parse('123456789', :tt).valid? # => true
+CompanyNumber.parse("123456789").valid?      # => true
+CompanyNumber.parse("123456789", :tt).valid? # => true
 
 CompanyNumber.configure do |config|
   config.strict_validation = true
 end
 
-CompanyNumber.parse('123456789').valid?      # => false
-CompanyNumber.parse('123456789', :tt).valid? # => false
+CompanyNumber.parse("123456789").valid?      # => false
+CompanyNumber.parse("123456789", :tt).valid? # => false
 ```
 
 **excluded_countries:**
 
-You may want to exclude some countries, this allows you to automatically validate the country's company number when strict validation is not enabled. You can also exclude a country to overwrite all its metadata and define it later in a custom dictionary.
+You may want to exclude some countries, this allows you to automatically validate the country"s company number when strict validation is not enabled. You can also exclude a country to overwrite all its metadata and define it later in a custom dictionary.
 
 **Example:**
 ```ruby
-CompanyNumber.parse('123456789', :be).valid? # => false
+CompanyNumber.parse("123456789", :be).valid? # => false
 
 CompanyNumber.configure do |config|
   config.excluded_countries = [:be]
 end
 
-CompanyNumber.parse('123456789', :be).valid? # => true
+CompanyNumber.parse("123456789", :be).valid? # => true
 ```
 
 ## Default dictionary:
 
 - `:at` - **Austria** - Firmenbuchnummer
-- `:be` - **Belgium** - Numéro d'entreprise Vestigingseenheidsnummer
+- `:be` - **Belgium** - Numéro d"entreprise Vestigingseenheidsnummer
 - `:bg` - **Bulgaria** - ЕИК (EIK)/ПИК (PIK) (UIC/PIC)
 - `:hr` - **Croatia** - Matični broj poslovnog subjekta (MBS)
 - `:cy` - **Cyprus** - Αριθμός Μητρώου Εταιρίας Şirket kayıt numarası
@@ -155,7 +155,7 @@ CompanyNumber.parse('123456789', :be).valid? # => true
 - `:lv` - **Latvia** - Reģistrācijas numurs
 - `:li` - **Liechtenstein** - UID
 - `:lt` - **Lithuania** - Juridinio asmens kodas
-- `:lu` - **Luxembourg** - Numéro d'immatriculation
+- `:lu` - **Luxembourg** - Numéro d"immatriculation
 - `:mt` - **Malta** - Registration Number
 - `:nl` - **Netherlands** - KvK-nummer
 - `:no` - **Norway** - TIN
@@ -184,4 +184,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the CompanyNumber project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/victorauthiat/company_number/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the CompanyNumber project"s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/victorauthiat/company_number/blob/master/CODE_OF_CONDUCT.md).

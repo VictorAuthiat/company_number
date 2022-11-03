@@ -5,7 +5,7 @@ Style/FrozenStringLiteralComment:
   Enabled: false
 
 Style/StringLiterals:
-  Enabled: false
+  EnforcedStyle: double_quotes
 
 Style/Documentation:
   Enabled: false
@@ -22,14 +22,14 @@ Metrics/MethodLength:
 
 Metrics/BlockLength:
   Exclude:
-    - '**/*.gemspec'
-    - 'spec/**/*'
+    - "**/*.gemspec"
+    - "spec/**/*"
 
 Layout/LineLength:
   Max: 80
   Exclude:
-    - '**/*.gemspec'
-    - 'spec/**/*'
+    - "**/*.gemspec"
+    - "spec/**/*"
 
 Naming/MemoizedInstanceVariableName:
    EnforcedStyleForLeadingUnderscores: optional

@@ -60,7 +60,7 @@ jobs:
         run: |
           cat << EOF > .fasterer.yml
           exclude_paths:
-            - 'vendor/**/*.rb'
+            - "vendor/**/*.rb"
           EOF
       - name: Run Fasterer
         run: fasterer || true

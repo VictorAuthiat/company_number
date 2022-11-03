@@ -7,7 +7,7 @@ at:
 
 be:
   country: Belgium
-  name: Numéro d'entreprise Vestigingseenheidsnummer
+  name: Numéro d"entreprise Vestigingseenheidsnummer
   regexp: ^\d{10}$
   pattern: 10 numbers (XXXXXXXXXX)
 
@@ -124,9 +124,9 @@ lt:
 
 lu:
   country: Luxembourg
-  name: Numéro d'immatriculation
+  name: Numéro d"immatriculation
   regexp: ^[a-zA-Z]{1}\d{6}|[a-jA-J]\d{3}$
-  pattern: 1 letter + 6 numbers (LXXXXXX)'
+  pattern: 1 letter + 6 numbers (LXXXXXX)"
   variations: 1 letter (from A to J) + 3 numbers (AXXX)
 
 mt:
