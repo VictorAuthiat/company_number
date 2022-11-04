@@ -3,7 +3,7 @@
 require "simplecov_json_formatter"
 
 SimpleCov.start do
-  coverage_dir "coverage-#{ENV['GITHUB_STEP_SUMMARY']}" if ENV["GITHUB_STEP_SUMMARY"]
+  coverage_dir "coverage"
   add_filter "spec"
 end
 
