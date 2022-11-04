@@ -1,7 +1,7 @@
 # CompanyNumber
 
 [![Gem Version](https://badge.fury.io/rb/company_number.svg)](https://badge.fury.io/rb/company_number)
-[![Build Status](https://github.com/VictorAuthiat/company_number/actions/workflows/build.yml/badge.svg)](https://github.com/VictorAuthiat/company_number/actions/workflows/build.yml)
+[![Build Status](https://github.com/VictorAuthiat/company_number/actions/workflows/ci.yml/badge.svg)](https://github.com/VictorAuthiat/company_number/actions/workflows/ci.yml)
 [![Code Climate](https://codeclimate.com/github/VictorAuthiat/company_number/badges/gpa.svg)](https://codeclimate.com/github/VictorAuthiat/company_number)
 [![Test Coverage](https://codeclimate.com/github/VictorAuthiat/company_number/badges/coverage.svg)](https://codeclimate.com/github/VictorAuthiat/company_number/coverage)
 [![Issue Count](https://codeclimate.com/github/VictorAuthiat/company_number/badges/issue_count.svg)](https://codeclimate.com/github/VictorAuthiat/company_number)
