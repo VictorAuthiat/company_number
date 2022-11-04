@@ -31,4 +31,7 @@ Layout/LineLength:
     - "*.gemspec"
 
 Naming/MemoizedInstanceVariableName:
-   EnforcedStyleForLeadingUnderscores: optional
+  EnforcedStyleForLeadingUnderscores: optional
+
+Gemspec/RequireMFA:
+  Enabled: false
