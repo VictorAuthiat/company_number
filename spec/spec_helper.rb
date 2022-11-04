@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 require "simplecov"
-SimpleCov.start
+
+SimpleCov.start do
+  coverage_dir "coverage-#{ENV['GITHUB_STEP_SUMMARY']}" if ENV["GITHUB_STEP_SUMMARY"]
+end
 
 require "company_number"
 
