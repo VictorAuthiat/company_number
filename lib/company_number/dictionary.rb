@@ -5,7 +5,7 @@ module CompanyNumber
     attr_reader :country_codes_metadata, :default_hash
 
     def self.default_dictionary_path
-      File.join(File.dirname(__FILE__), '../../config/dictionary.yml')
+      File.join(File.dirname(__FILE__), "../../config/dictionary.yml")
     end
 
     def initialize(country_codes_metadata = {})

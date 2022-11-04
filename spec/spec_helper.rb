@@ -4,7 +4,6 @@ require "simplecov"
 SimpleCov.start
 
 require "company_number"
-require "pry"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

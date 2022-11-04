@@ -1,0 +1,76 @@
+name: "CI"
+
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  lint:
+    name: "RuboCop"
+    timeout-minutes: 5
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@v3"
+
+      - name: "Set up Ruby"
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: "3.1"
+          bundler-cache: true
+
+      - name: "Run RuboCop"
+        run: "bundle exec rubocop"
+
+  test:
+    runs-on: "ubuntu-latest"
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby-version:
+          - "2.5"
+          - "2.6"
+          - "2.7"
+          - "3.0"
+          - "3.1"
+
+    steps:
+      - uses: "actions/checkout@v3"
+
+      - name: "Set up Ruby"
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: "${{ matrix.ruby-version }}"
+          bundler-cache: true
+
+      - name: "Run specs"
+        run: "bundle exec rspec"
+
+      - name: "Upload artifacts"
+        uses: "actions/upload-artifact@v3"
+        with:
+          name: "coverage-artifacts"
+          path: "${{github.workspace}}/coverage-*/coverage.json"
+          retention-days: 1
+
+  coverage:
+    name: "Report coverage to Code Climate"
+    runs-on: "ubuntu-20.04"
+    needs: "test"
+    if: "success() && github.ref == 'refs/heads/master'"
+    env:
+      CC_TEST_REPORTER_ID: "${{ secrets.CC_TEST_REPORTER_ID }}"
+
+    steps:
+      - uses: "actions/checkout@v3"
+
+      - name: "Download coverage artifacts from test job"
+        uses: "actions/download-artifact@v3"
+        with:
+          name: "coverage-artifacts"
+      - uses: "paambaati/codeclimate-action@v3.2.0"
+        with:
+          coverageLocations: "coverage-*/coverage.json:simplecov"

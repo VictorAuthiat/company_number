@@ -5,9 +5,9 @@ require_relative "company_number/version"
 require_relative "company_number/validation"
 
 module CompanyNumber
-  autoload :Configuration, 'company_number/configuration'
-  autoload :Dictionary,    'company_number/dictionary'
-  autoload :Number,        'company_number/number'
+  autoload :Configuration, "company_number/configuration"
+  autoload :Dictionary,    "company_number/dictionary"
+  autoload :Number,        "company_number/number"
 
   class << self
     def parse(company_number, country_code = nil)

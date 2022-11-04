@@ -8,9 +8,12 @@ Gem::Specification.new do |spec|
   spec.authors  = ["victorauthiat"]
   spec.email    = ["authiatv@gmail.com"]
 
-  spec.summary  = 'Validate a company number according to a country code'
-  spec.homepage = 'https://github.com/victorauthiat/company_number'
-  spec.license  = 'MIT'
+  spec.summary  = "Validate a company number according to a country code"
+  spec.homepage = "https://github.com/victorauthiat/company_number"
+  spec.license  = "MIT"
+  spec.required_ruby_version = ">= 2.5"
+
+  spec.metadata = { "rubygems_mfa_required" => "true" }
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{\A(?:test|spec|features)/}) }
@@ -19,9 +22,8 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency 'bundler', '~> 2.2.25'
-  spec.add_development_dependency 'pry', '~> 0.14.1'
-  spec.add_development_dependency 'rake', '~> 13.0.6'
-  spec.add_development_dependency 'rspec', '~> 3.10.0'
-  spec.add_development_dependency 'simplecov', '~> 0.21.2'
+  spec.add_development_dependency "bundler"
+  spec.add_development_dependency "rake"
+  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "simplecov"
 end
