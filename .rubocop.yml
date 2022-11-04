@@ -1,5 +1,9 @@
 AllCops:
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 2.5
+  NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - "vendor/**/*"
 
 Style/FrozenStringLiteralComment:
   Enabled: false
@@ -10,10 +14,6 @@ Style/StringLiterals:
 Style/Documentation:
   Enabled: false
 
-Metrics/BlockLength:
-  Exclude:
-    - spec/**/*
-
 Metrics/CyclomaticComplexity:
   Enabled: true
 
@@ -22,17 +22,13 @@ Metrics/MethodLength:
 
 Metrics/BlockLength:
   Exclude:
-    - "**/*.gemspec"
-    - "spec/**/*"
+    - "spec/**/*_spec.rb"
+    - "*.gemspec"
 
 Layout/LineLength:
-  Max: 80
   Exclude:
-    - "**/*.gemspec"
-    - "spec/**/*"
+    - "spec/**/*_spec.rb"
+    - "*.gemspec"
 
 Naming/MemoizedInstanceVariableName:
    EnforcedStyleForLeadingUnderscores: optional
-
-Gemspec/RequiredRubyVersion:
-  Enabled: false
