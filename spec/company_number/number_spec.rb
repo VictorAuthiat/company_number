@@ -48,6 +48,8 @@ RSpec.describe CompanyNumber::Number do
       subject { number.valid? }
 
       context "given the country_code is nil" do
+        let(:country_code) { nil }
+
         it { expect(subject).to eq(true) }
       end
 

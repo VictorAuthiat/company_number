@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
 require "simplecov"
-
-SimpleCov.start do
-  coverage_dir "coverage-#{ENV['GITHUB_STEP_SUMMARY']}" if ENV["GITHUB_STEP_SUMMARY"]
-end
-
 require "company_number"
 
 RSpec.configure do |config|
@@ -18,4 +13,6 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  config.order = "random"
 end
