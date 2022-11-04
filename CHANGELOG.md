@@ -1,5 +1,10 @@
 ## Changelog
 
+### 0.1.3 - 2022-11-04
+  * Enhancements:
+    * Update CI - f67a9e3
+    * Update RuboCop configuration - 3af3dc7
+
 ### 0.1.2 - 2022-04-21
   * Features:
     * Add custom configurations - aae0d51
