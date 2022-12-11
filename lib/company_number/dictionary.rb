@@ -5,7 +5,7 @@ module CompanyNumber
     attr_reader :country_codes_metadata, :default_hash
 
     def self.default_dictionary_path
-      File.join(File.dirname(__FILE__), "../../config/dictionary.yml")
+      File.join(File.dirname(__FILE__), "../../config/dictionary.json")
     end
 
     def initialize(country_codes_metadata = {})
@@ -33,7 +33,7 @@ module CompanyNumber
     end
 
     def load_default_hash
-      YAML.safe_load(
+      JSON.parse(
         File.read(self.class.default_dictionary_path),
         symbolize_names: true
       )
