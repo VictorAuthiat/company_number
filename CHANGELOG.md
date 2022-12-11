@@ -1,5 +1,13 @@
 ## Changelog
 
+### 0.1.4 - 2022-12-11
+  * Enhancements:
+    * Change dictionary to JSON - 2ced0f8
+    * Aggregating Failures - 54c5655
+
+  * Deprecations:
+    * Change `variations` class from *String* to *Array* - 0eb4074
+
 ### 0.1.3 - 2022-11-04
   * Enhancements:
     * Update CI - f67a9e3

@@ -80,7 +80,7 @@ CompanyNumber.parse("123") == CompanyNumber.parse("123")
 Finally you can get the whole dictionary
 ```ruby
 CompanyNumber.dictionary
-# => {:at=>{:country=>"Austria", :name=>"Firmenbuchnummer", :regexp=>"^([a-zA-Z]{2}\\d{1,6}|\\d{1,6})[A-Z]$", :pattern=>"2 letters + 6 numbers + 1 letter (LLXXXXXXL)", :variations=>"1-6 numbers + 1 letter (XXXXXXL)"}, ...}
+# => {:at=>{:country=>"Austria", :name=>"Firmenbuchnummer", :regexp=>"^([a-zA-Z]{2}\\d{1,6}|\\d{1,6})[A-Z]$", :pattern=>"2 letters + 6 numbers + 1 letter (LLXXXXXXL)", :variations=>["1-6 numbers + 1 letter (XXXXXXL)"]}, ...}
 ```
 
 ## Configuration
@@ -88,11 +88,11 @@ You can configure your own dictionary using **custom_dictionary**.
 It should be a hash with the country codes as keys and the associated metadata as values.
 
 Available metadata keys:
-- country
-- name
-- regexp
-- pattern
-- variations
+- country - *String*
+- name - *String*
+- regexp - *String*
+- pattern - *String*
+- variations - *Array*
 
 **Example:**
 ```ruby

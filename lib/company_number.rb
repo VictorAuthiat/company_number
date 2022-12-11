@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "yaml"
+require "json"
 require_relative "company_number/version"
 require_relative "company_number/validation"
 

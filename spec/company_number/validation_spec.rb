@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe CompanyNumber::Validation do
   describe ".check_object_class" do
-    it "detects invalid arguments" do
+    it "detects invalid arguments", aggregate_failures: true do
       expect { described_class.check_object_class(1, [String]) }.to raise_error(ArgumentError)
       expect { described_class.check_object_class(1, [Integer]) }.not_to raise_error
       expect { described_class.check_object_class(:foo, [String]) }.to raise_error(ArgumentError)
@@ -13,7 +13,7 @@ RSpec.describe CompanyNumber::Validation do
   end
 
   describe ".check_object_inclusion" do
-    it "detects invalid arguments" do
+    it "detects invalid arguments", aggregate_failures: true do
       expect { described_class.check_object_inclusion(1, [2, 3, 4]) }.to raise_error(ArgumentError)
       expect { described_class.check_object_inclusion(1, [1, 2, 3]) }.not_to raise_error
       expect { described_class.check_object_inclusion(Integer, [String, Hash]) }.to raise_error(ArgumentError)
@@ -22,7 +22,7 @@ RSpec.describe CompanyNumber::Validation do
   end
 
   describe ".check_string_format" do
-    it "validates given string" do
+    it "validates given string", aggregate_failures: true do
       expect { described_class.check_string_format("foo", /bar/) }.to raise_error(ArgumentError)
       expect { described_class.check_string_format("foo", /foo/) }.not_to raise_error
     end
@@ -42,7 +42,7 @@ RSpec.describe CompanyNumber::Validation do
         expect(subject).to eq(nil)
       end
 
-      it "does not call validations" do
+      it "does not call validations", aggregate_failures: true do
         expect(described_class).not_to receive(:check_object_class)
         expect(described_class).not_to receive(:check_string_format)
         subject
@@ -83,7 +83,7 @@ RSpec.describe CompanyNumber::Validation do
 
     let(:metadata) do
       {
-        variations: "foo",
+        variations: ["foo"],
         pattern: "bar",
         country: "baz",
         regexp: "/foo/",
@@ -91,7 +91,7 @@ RSpec.describe CompanyNumber::Validation do
       }
     end
 
-    it "validates metadata" do
+    it "validates metadata", aggregate_failures: true do
       expect(CompanyNumber::Validation).to(
         receive(:check_object_inclusion)
         .exactly(metadata.size)
