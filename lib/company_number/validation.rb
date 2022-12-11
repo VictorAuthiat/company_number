@@ -43,7 +43,8 @@ module CompanyNumber
       def check_country_code_metadata(metadata)
         metadata.each do |key, value|
           check_object_inclusion(key, AVAILABLE_METADATA_KEYS)
-          check_object_class(value, [String])
+          object_class = key == :variations ? Array : String
+          check_object_class(value, [object_class])
         end
       end
 
