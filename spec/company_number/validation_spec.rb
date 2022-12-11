@@ -83,7 +83,7 @@ RSpec.describe CompanyNumber::Validation do
 
     let(:metadata) do
       {
-        variations: "foo",
+        variations: ["foo"],
         pattern: "bar",
         country: "baz",
         regexp: "/foo/",
