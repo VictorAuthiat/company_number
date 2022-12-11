@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe CompanyNumber::Dictionary do
   describe "#initialize" do
-    it "detects invalid country_codes_metadata" do
+    it "detects invalid country_codes_metadata", aggregate_failures: true do
       expect { described_class.new(:foo) }.to raise_error(ArgumentError)
       expect { described_class.new({ foo: :bar }) }.to raise_error(ArgumentError)
       expect { described_class.new({ foo: { bar: :baz } }) }.to raise_error(ArgumentError)

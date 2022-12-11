@@ -72,7 +72,7 @@ RSpec.describe CompanyNumber::Configuration do
           )
         end
 
-        it "resets dictionary" do
+        it "resets dictionary", aggregate_failures: true do
           expect(configuration.instance_variable_get("@dictionary"))
             .to eq(original_dictionary)
 
@@ -136,7 +136,7 @@ RSpec.describe CompanyNumber::Configuration do
           )
         end
 
-        it "resets dictionary" do
+        it "resets dictionary", aggregate_failures: true do
           expect(configuration.instance_variable_get("@dictionary"))
             .to eq(original_dictionary)
 
